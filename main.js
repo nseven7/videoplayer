@@ -1,62 +1,58 @@
-// JavaScript код для плеера
-const player = document.querySelector('.player');
-const video = player.querySelector('.player__video');
-const progress = player.querySelector('.progress');
-const progressBar = player.querySelector('.progress__filled');
-const toggle = player.querySelector('.toggle');
-const skips = player.querySelectorAll('.skip');
-const ranges = player.querySelectorAll('.player__slider');
+var video = document.getElementById("myVideo");
+var playPauseButton = document.getElementById("playPauseButton");
+var muteButton = document.getElementById("muteButton");
+var volumeSlider = document.getElementById("volumeSlider");
+var fullscreenButton = document.getElementById("fullscreenButton");
+var progressBar = document.querySelector(".progress-bar");
+var progressContainer = document.querySelector(".progress-container");
 
-function togglePlay() {
-  const method = video.paused ? 'play' : 'pause';
-  video[method]();
+function togglePlayPause() {
+  if (video.paused) {
+    video.play();
+    playPauseButton.classList.remove("play-button");
+    playPauseButton.classList.add("pause-button");
+  } else {
+    video.pause();
+    playPauseButton.classList.remove("pause-button");
+    playPauseButton.classList.add("play-button");
+  }
 }
 
-function updateButton() {
-  const icon = this.paused ? '►' : '❚ ❚';
-  toggle.textContent = icon;
+function toggleMute() {
+  if (video.muted) {
+    video.muted = false;
+    muteButton.innerHTML = "Выключить звук";
+  } else {
+    video.muted = true;
+    muteButton.innerHTML = "Включить звук";
+  }
 }
 
-function skip() {
-  const skipTime = parseFloat(this.dataset.skip);
-  video.currentTime += skipTime;
+function updateVolume() {
+  video.volume = volumeSlider.value;
 }
 
-function handleRangeUpdate() {
-  video[this.name] = this.value;
+function toggleFullscreen() {
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  } else {
+    video.requestFullscreen();
+  }
 }
 
-function handleProgress() {
-  const percent = (video.currentTime / video.duration) * 100;
-  progressBar.style.flexBasis = `${percent}%`;
+function updateProgressBar() {
+  var currentTime = video.currentTime;
+  var duration = video.duration;
+  var progress = (currentTime / duration) * 100;
+  progressBar.style.width = progress + "%";
 }
 
-function scrub(e) {
-  const scrubTime = (e.offsetX / progress.offsetWidth) * video.duration;
-  video.currentTime = scrubTime;
-}
-
-function skipOpening() {
-  const skipTime = parseFloat(this.dataset.skip);
-  video.currentTime += skipTime;
-}
-
-// Слушатели событий
-video.addEventListener('click', togglePlay);
-video.addEventListener('play', updateButton);
-video.addEventListener('pause', updateButton);
-video.addEventListener('timeupdate', handleProgress);
-toggle.addEventListener('click', togglePlay);
-skips.forEach(skipBtn => skipBtn.addEventListener('click', skip));
-ranges.forEach(range => range.addEventListener('change', handleRangeUpdate));
-ranges.forEach(range => range.addEventListener('mousemove', handleRangeUpdate));
-progress.addEventListener('click', scrub);
-let skipBtns = document.querySelectorAll('.skip');
-skipBtns.forEach(btn => btn.addEventListener('click', skipOpening));
-
-
-function handleProgress() {
-  const percent = (video.currentTime / video.duration) * 100;
-  progressBar.style.flexBasis = `${percent}%`;
-  progressBar.style.width = `${percent}%`;
-}
+playPauseButton.addEventListener("click", togglePlayPause);
+muteButton.addEventListener("click", toggleMute);
+volumeSlider.addEventListener("input", updateVolume);
+fullscreenButton.addEventListener("click", toggleFullscreen);
+video.addEventListener("timeupdate", updateProgressBar);
+progressContainer.addEventListener("click", function(e) {
+  var pos = (e.pageX - (this.offsetLeft + this.offsetParent.offsetLeft)) / this.offsetWidth;
+  video.currentTime = pos * video.duration;
+});
