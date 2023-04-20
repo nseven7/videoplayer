@@ -8,23 +8,62 @@
     <title>Document</title>
 </head>
 <body>
-    <!-- HTML разметка для плеера -->
-    <div class="video-container">
-      <video id="myVideo" src="https://r10103.kujo-jotaro.com/bleach/24.480.7d083052c5bc503d.mp4?hash1=80ce39d2cbe5558e5aa976aa44d01bd7&hash2=64115e5fce27207f3e1ce71f28476543"></video>
-      <div class="controls">
-        <button id="playPauseButton" class="control-button play-button">Воспроизвести</button>
-        <div class="volume-control">
-          <button id="muteButton" class="control-button volume-button">Выключить звук</button>
-          <input type="range" min="0" max="1" step="0.1" value="1" id="volumeSlider">
-        </div>
-        <button id="fullscreenButton" class="control-button fullscreen-button">Полный экран</button>
-        <div class="progress-container">
-          <div class="progress-bar"></div>
-        </div>
-      </div>
-    </div>
+  <video id="my-video" class="my-video" src="https://r10103.kujo-jotaro.com/bleach/24.480.7d083052c5bc503d.mp4?hash1=80ce39d2cbe5558e5aa976aa44d01bd7&hash2=64115e5fce27207f3e1ce71f28476543"></video>
 
+  <div id="controls">
+    <button id="play-pause-button">Play</button>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
+    <button id="fullscreen-button">Fullscreen</button>
+    <progress id="progress-bar" min="0" max="100" value="0"></progress>
+  </div>
 
-    <script src="main.js"></script>
+  <script>
+    var video = document.getElementById('my-video');
+    var playPauseButton = document.getElementById('play-pause-button');
+    var volumeSlider = document.getElementById('volume-slider');
+    var fullscreenButton = document.getElementById('fullscreen-button');
+    var progressBar = document.getElementById('progress-bar');
+
+    // Play/Pause Button
+    playPauseButton.addEventListener('click', function() {
+      if (video.paused) {
+        video.play();
+        playPauseButton.innerHTML = 'Pause';
+      } else {
+        video.pause();
+        playPauseButton.innerHTML = 'Play';
+      }
+    });
+
+    // Volume Slider
+    volumeSlider.addEventListener('input', function() {
+      video.volume = volumeSlider.value;
+    });
+
+    // Fullscreen Button
+    fullscreenButton.addEventListener('click', function() {
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+      } else if (video.mozRequestFullScreen) {
+        video.mozRequestFullScreen();
+      } else if (video.msRequestFullscreen) {
+        video.msRequestFullscreen();
+      }
+    });
+
+    // Progress Bar
+    video.addEventListener('timeupdate', function() {
+      var percent = (video.currentTime / video.duration) * 100;
+      progressBar.value = percent;
+    });
+
+    progressBar.addEventListener('click', function(e) {
+      var x = e.pageX - this.offsetLeft;
+      var percent = x / this.offsetWidth;
+      video.currentTime = percent * video.duration;
+    });
+  </script>
 </body>
 </html>
