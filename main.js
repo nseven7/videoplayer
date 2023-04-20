@@ -1,58 +1,69 @@
-var video = document.getElementById("myVideo");
-var playPauseButton = document.getElementById("playPauseButton");
-var muteButton = document.getElementById("muteButton");
-var volumeSlider = document.getElementById("volumeSlider");
-var fullscreenButton = document.getElementById("fullscreenButton");
-var progressBar = document.querySelector(".progress-bar");
-var progressContainer = document.querySelector(".progress-container");
+    var video = document.getElementById('my-video');
+    var playPauseButton = document.getElementById('play-pause-button');
+    var volumeSlider = document.getElementById('volume-slider');
+    var fullscreenButton = document.getElementById('fullscreen-button');
+    var progressBar = document.getElementById('progress-bar');
+    var timeDisplay = document.getElementById('time-display');
 
-function togglePlayPause() {
-  if (video.paused) {
-    video.play();
-    playPauseButton.classList.remove("play-button");
-    playPauseButton.classList.add("pause-button");
-  } else {
-    video.pause();
-    playPauseButton.classList.remove("pause-button");
-    playPauseButton.classList.add("play-button");
-  }
-}
+    video.addEventListener('timeupdate', function() {
+      var currentTime = video.currentTime;
+      var duration = video.duration;
 
-function toggleMute() {
-  if (video.muted) {
-    video.muted = false;
-    muteButton.innerHTML = "Выключить звук";
-  } else {
-    video.muted = true;
-    muteButton.innerHTML = "Включить звук";
-  }
-}
+      // Format the time as mm:ss
+      var currentTimeString = formatTime(currentTime);
+      var durationString = formatTime(duration);
 
-function updateVolume() {
-  video.volume = volumeSlider.value;
-}
+      // Update the time display
+      timeDisplay.innerHTML = currentTimeString + ' / ' + durationString;
+    });
 
-function toggleFullscreen() {
-  if (document.fullscreenElement) {
-    document.exitFullscreen();
-  } else {
-    video.requestFullscreen();
-  }
-}
+    function formatTime(time) {
+      var minutes = Math.floor(time / 60);
+      var seconds = Math.floor(time % 60);
+      if (seconds < 10) {
+        seconds = '0' + seconds;
+      }
+      return minutes + ':' + seconds;
+    }
 
-function updateProgressBar() {
-  var currentTime = video.currentTime;
-  var duration = video.duration;
-  var progress = (currentTime / duration) * 100;
-  progressBar.style.width = progress + "%";
-}
 
-playPauseButton.addEventListener("click", togglePlayPause);
-muteButton.addEventListener("click", toggleMute);
-volumeSlider.addEventListener("input", updateVolume);
-fullscreenButton.addEventListener("click", toggleFullscreen);
-video.addEventListener("timeupdate", updateProgressBar);
-progressContainer.addEventListener("click", function(e) {
-  var pos = (e.pageX - (this.offsetLeft + this.offsetParent.offsetLeft)) / this.offsetWidth;
-  video.currentTime = pos * video.duration;
-});
+    // Play/Pause Button
+    playPauseButton.addEventListener('click', function() {
+      if (video.paused) {
+        video.play();
+        playPauseButton.innerHTML = 'Pause';
+      } else {
+        video.pause();
+        playPauseButton.innerHTML = 'Play';
+      }
+    });
+
+    // Volume Slider
+    volumeSlider.addEventListener('input', function() {
+      video.volume = volumeSlider.value;
+    });
+
+    // Fullscreen Button
+    fullscreenButton.addEventListener('click', function() {
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+      } else if (video.mozRequestFullScreen) {
+        video.mozRequestFullScreen();
+      } else if (video.msRequestFullscreen) {
+        video.msRequestFullscreen();
+      }
+    });
+
+    // Progress Bar
+    video.addEventListener('timeupdate', function() {
+      var percent = (video.currentTime / video.duration) * 100;
+      progressBar.value = percent;
+    });
+
+    progressBar.addEventListener('click', function(e) {
+      var x = e.pageX - this.offsetLeft;
+      var percent = x / this.offsetWidth;
+      video.currentTime = percent * video.duration;
+    });
