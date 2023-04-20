@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>VideoPlayer</title>
 </head>
 <body>
   <video id="my-video" class="my-video" src="https://r10103.kujo-jotaro.com/bleach/24.480.7d083052c5bc503d.mp4?hash1=80ce39d2cbe5558e5aa976aa44d01bd7&hash2=64115e5fce27207f3e1ce71f28476543"></video>
@@ -16,6 +16,10 @@
       <progress id="progress-bar" min="0" max="100" value="0"></progress>
       <span id="time-display">0:00 / 0:00</span>
       <button id="fullscreen-button">Fullscreen</button>
+        
+      <div id="fullscreen-controls">
+        <button id="exit-fullscreen-button">Exit Fullscreen</button>
+      </div>
     </div>
 
 <script src="main.js"></script>
