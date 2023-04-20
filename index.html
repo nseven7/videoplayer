@@ -15,7 +15,6 @@
     <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
     <button id="fullscreen-button">Fullscreen</button>
     <progress id="progress-bar" min="0" max="100" value="0"></progress>
-    <span id="time-display">0:00 / 0:00</span>
   </div>
 
   <script>
@@ -24,29 +23,6 @@
     var volumeSlider = document.getElementById('volume-slider');
     var fullscreenButton = document.getElementById('fullscreen-button');
     var progressBar = document.getElementById('progress-bar');
-    var timeDisplay = document.getElementById('time-display');
-
-    video.addEventListener('timeupdate', function() {
-      var currentTime = video.currentTime;
-      var duration = video.duration;
-
-      // Format the time as mm:ss
-      var currentTimeString = formatTime(currentTime);
-      var durationString = formatTime(duration);
-
-      // Update the time display
-      timeDisplay.innerHTML = currentTimeString + ' / ' + durationString;
-    });
-
-    function formatTime(time) {
-      var minutes = Math.floor(time / 60);
-      var seconds = Math.floor(time % 60);
-      if (seconds < 10) {
-        seconds = '0' + seconds;
-      }
-      return minutes + ':' + seconds;
-    }
-
 
     // Play/Pause Button
     playPauseButton.addEventListener('click', function() {
