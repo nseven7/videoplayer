@@ -4,6 +4,54 @@
     var fullscreenButton = document.getElementById('fullscreen-button');
     var progressBar = document.getElementById('progress-bar');
     var timeDisplay = document.getElementById('time-display');
+    var video = document.getElementById('video');
+    var fullscreenButton = document.getElementById('fullscreen-button');
+    var exitFullscreenButton = document.getElementById('exit-fullscreen-button');
+    var fullscreenControls = document.getElementById('fullscreen-controls');
+
+    // При нажатии кнопки Fullscreen, показываем элементы fullscreen-controls и входим в полноэкранный режим
+    fullscreenButton.addEventListener('click', function() {
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.webkitRequestFullscreen) { /* Safari */
+        video.webkitRequestFullscreen();
+      } else if (video.msRequestFullscreen) { /* IE11 */
+        video.msRequestFullscreen();
+      }
+      fullscreenControls.style.display = 'block';
+    });
+
+    // При нажатии кнопки Exit Fullscreen, скрываем элементы fullscreen-controls и выходим из полноэкранного режима
+    exitFullscreenButton.addEventListener('click', function() {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) { /* Safari */
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) { /* IE11 */
+        document.msExitFullscreen();
+      }
+      fullscreenControls.style.display = 'none';
+    });
+
+    // Скрываем элементы fullscreen-controls при выходе из полноэкранного режима
+    document.addEventListener('fullscreenchange', function() {
+      if (!document.fullscreenElement) {
+        fullscreenControls.style.display = 'none';
+      }
+    });
+
+    document.addEventListener('webkitfullscreenchange', function() {
+      if (!document.webkitFullscreenElement) {
+        fullscreenControls.style.display = 'none';
+      }
+    });
+
+    document.addEventListener('msfullscreenchange', function() {
+      if (!document.msFullscreenElement) {
+        fullscreenControls.style.display = 'none';
+      }
+    });
+
 
     video.addEventListener('timeupdate', function() {
       var currentTime = video.currentTime;
