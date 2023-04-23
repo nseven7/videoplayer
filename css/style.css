@@ -1,3 +1,6 @@
+:root{
+    --plyr-color-main: #BD48DA;
+}
 .videoplayer{
     width: 500px;
     margin: auto;
