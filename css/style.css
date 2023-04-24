@@ -1,5 +1,13 @@
+@font-face {
+    font-family: Montserrat; /* Имя шрифта */
+    src: url(/src/fonts/Montserrat-Regular.ttf); /* Путь к файлу со шрифтом */
+   }
 :root{
     --plyr-color-main: #BD48DA;
+    --plyr-font-family:	Montserrat;
+}
+body{
+    background-color: #1e1e1e;
 }
 .videoplayer{
     width: 500px;
