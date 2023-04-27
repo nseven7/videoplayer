@@ -3,22 +3,13 @@ const player = new Plyr('#player', {
   seekTime: 5,
 });
 
+// Сохраняем значение времени воспроизведения при каждом событии timeupdate
+player.on('timeupdate', function(event) {
+  localStorage.setItem('plyr_current_time', player.currentTime);
+});
 
-// Сохраняем последнюю позицию в localStorage
-function saveLastWatched() {
-  localStorage.setItem("lastWatched", player.currentTime);
-}
-
-// Слушаем событие остановки воспроизведения
-player.on("pause", saveLastWatched);
-
-// Слушаем событие закрытия страницы
-window.addEventListener("beforeunload", saveLastWatched);
-
-// Получаем последнюю сохраненную позицию из localStorage
-const lastWatched = localStorage.getItem("lastWatched");
-
-// Устанавливаем последнюю позицию с помощью API Plyr
-if (lastWatched !== null) {
-  player.currentTime = lastWatched;
+// Восстанавливаем последний просмотренный момент при загрузке плеера
+const lastTime = localStorage.getItem('plyr_current_time');
+if (lastTime !== null) {
+  player.currentTime = lastTime;
 }
