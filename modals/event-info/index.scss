@@ -1,0 +1,22 @@
+.brick{
+    background-color: Gainsboro;
+    margin: 1em 0em 0em 0em;
+    padding: 0.5em;
+}
+
+.brick-list > .brick:nth-child(1) {
+  margin-top: 0;
+}
+
+
+@media (max-width: 440px) {
+  .brick-name {
+    font-size: 18px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .brick-name {
+    font-size: 22px !important;
+  }
+}

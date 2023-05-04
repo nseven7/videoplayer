@@ -1,0 +1,16 @@
+.header {
+  // background-color: var(--header-bg);
+  // padding: 0px 40px;
+}
+
+.header-container {
+  background-color: var(--header-bg);
+
+}
+
+
+@media (max-width: 991px) {
+  .header-container > .container {
+    max-width: 1200px !important;
+  }
+}
